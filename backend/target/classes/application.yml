@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: restaurant-reservation-system
+    
+  datasource:
+    url: jdbc:postgresql://localhost:5432/restaurant_reservation
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+    
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    timeout: 2000ms
+    
+  security:
+    jwt:
+      secret: ${JWT_SECRET:mySecretKey12345678901234567890123456789012345678901234567890}
+      expiration: 86400000 # 24 hours
+      refresh-expiration: 604800000 # 7 days
+      
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    
+logging:
+  level:
+    com.restaurant.reservation: DEBUG
+    org.springframework.security: DEBUG
+    
+cors:
+  allowed-origins: 
+    - http://localhost:3000
+    - http://localhost:3001
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allowed-headers:
+    - "*"
+  expose-headers:
+    - Authorization
+  allow-credentials: true
+  max-age: 3600
