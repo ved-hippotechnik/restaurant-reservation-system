@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-08-13T05:18:03.037Z",
+  "overallScore": 2,
+  "criticalIssues": [
+    "Customer app testing failed: SyntaxError: Failed to execute 'querySelector' on 'Document': 'a[href*=\"search\"], button:contains(\"Search\")' is not a valid selector.",
+    "Admin app testing failed: page.waitForTimeout is not a function"
+  ],
+  "majorIssues": [],
+  "minorIssues": [],
+  "accessibilityViolations": [],
+  "performanceMetrics": {},
+  "customerApp": {},
+  "adminApp": {},
+  "newFeatures": {
+    "implemented": [],
+    "notImplemented": [],
+    "withIssues": []
+  }
+}

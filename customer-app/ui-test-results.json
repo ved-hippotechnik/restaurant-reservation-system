@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-08-14T10:26:04.121Z",
+  "customerApp": {
+    "searchPage": {},
+    "restaurantDetails": {},
+    "myReservations": {},
+    "accessibility": {},
+    "performance": {}
+  },
+  "adminApp": {
+    "tablesManagement": {},
+    "customerManagement": {},
+    "settings": {},
+    "accessibility": {},
+    "performance": {}
+  },
+  "overall": {
+    "score": 5.5,
+    "criticalIssues": [
+      {
+        "app": "customer",
+        "error": "net::ERR_CONNECTION_REFUSED at http://localhost:3002/search"
+      },
+      {
+        "app": "admin",
+        "error": "No element found for selector: input[type=\"password\"]"
+      }
+    ],
+    "majorIssues": [
+      "Customer app incomplete implementation",
+      "Admin app incomplete implementation",
+      "Mobile responsiveness issues"
+    ],
+    "minorIssues": [],
+    "accessibilityViolations": [
+      "Missing ARIA labels in customer app"
+    ],
+    "performanceMetrics": {}
+  }
+}

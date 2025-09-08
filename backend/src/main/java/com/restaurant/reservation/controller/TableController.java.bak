@@ -1,0 +1,128 @@
+package com.restaurant.reservation.controller;
+
+import com.restaurant.reservation.model.Table;
+import com.restaurant.reservation.dto.TableRequest;
+import com.restaurant.reservation.service.TableService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/tables")
+@RequiredArgsConstructor
+@Slf4j
+@Tag(name = "Tables", description = "Restaurant table management API")
+@SecurityRequirement(name = "JWT Bearer")
+public class TableController {
+
+    private final TableService tableService;
+
+    @GetMapping
+    @Operation(summary = "Get all tables", description = "Retrieve paginated list of restaurant tables")
+    @ApiResponse(responseCode = "200", description = "Tables retrieved successfully")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
+    public ResponseEntity<Page<Table>> getAllTables(
+            @Parameter(description = "Pagination parameters") Pageable pageable,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) String status) {
+        
+        log.info("Retrieving tables with location: {}, status: {}", location, status);
+        Page<Table> tables = tableService.getAllTables(pageable, location, status);
+        return ResponseEntity.ok(tables);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get table by ID", description = "Retrieve a specific table by its ID")
+    @ApiResponse(responseCode = "200", description = "Table found")
+    @ApiResponse(responseCode = "404", description = "Table not found")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
+    public ResponseEntity<Table> getTableById(@PathVariable Long id) {
+        log.info("Retrieving table with ID: {}", id);
+        Table table = tableService.getTableById(id);
+        return ResponseEntity.ok(table);
+    }
+
+    @PostMapping
+    @Operation(summary = "Create new table", description = "Create a new restaurant table")
+    @ApiResponse(responseCode = "201", description = "Table created successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid table data")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Table> createTable(@Valid @RequestBody TableRequest tableRequest) {
+        log.info("Creating new table: {}", tableRequest);
+        Table table = tableService.createTable(tableRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(table);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update table", description = "Update an existing restaurant table")
+    @ApiResponse(responseCode = "200", description = "Table updated successfully")
+    @ApiResponse(responseCode = "404", description = "Table not found")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Table> updateTable(
+            @PathVariable Long id,
+            @Valid @RequestBody TableRequest tableRequest) {
+        
+        log.info("Updating table with ID: {} with data: {}", id, tableRequest);
+        Table table = tableService.updateTable(id, tableRequest);
+        return ResponseEntity.ok(table);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete table", description = "Delete a restaurant table")
+    @ApiResponse(responseCode = "204", description = "Table deleted successfully")
+    @ApiResponse(responseCode = "404", description = "Table not found")
+    @ApiResponse(responseCode = "409", description = "Table has active reservations")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteTable(@PathVariable Long id) {
+        log.info("Deleting table with ID: {}", id);
+        tableService.deleteTable(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/status")
+    @Operation(summary = "Update table status", description = "Update the status of a restaurant table")
+    @ApiResponse(responseCode = "200", description = "Table status updated successfully")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('STAFF')")
+    public ResponseEntity<Table> updateTableStatus(
+            @PathVariable Long id,
+            @RequestParam String status) {
+        
+        log.info("Updating table {} status to: {}", id, status);
+        Table table = tableService.updateTableStatus(id, status);
+        return ResponseEntity.ok(table);
+    }
+
+    @GetMapping("/available")
+    @Operation(summary = "Get available tables", description = "Get tables available for reservation")
+    @ApiResponse(responseCode = "200", description = "Available tables retrieved")
+    public ResponseEntity<Page<Table>> getAvailableTables(
+            @Parameter(description = "Pagination parameters") Pageable pageable,
+            @RequestParam(required = false) String dateTime,
+            @RequestParam(required = false) Integer partySize) {
+        
+        log.info("Retrieving available tables for dateTime: {}, partySize: {}", dateTime, partySize);
+        Page<Table> availableTables = tableService.getAvailableTables(pageable, dateTime, partySize);
+        return ResponseEntity.ok(availableTables);
+    }
+
+    @GetMapping("/statistics")
+    @Operation(summary = "Get table statistics", description = "Get statistics about restaurant tables")
+    @ApiResponse(responseCode = "200", description = "Statistics retrieved successfully")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Object> getTableStatistics() {
+        log.info("Retrieving table statistics");
+        Object stats = tableService.getTableStatistics();
+        return ResponseEntity.ok(stats);
+    }
+}

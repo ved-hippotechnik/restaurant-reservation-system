@@ -1,1 +1,34 @@
-{}
+{
+  "name": "restaurant-reservation-system",
+  "version": "1.0.0",
+  "description": "Restaurant Reservation Management System",
+  "scripts": {
+    "build:all": "npm run build:admin && npm run build:customer",
+    "build:admin": "cd admin-app && npm run build:prod",
+    "build:customer": "cd customer-app && npm run build:prod",
+    "analyze:bundles": "node scripts/build/optimize-bundles.js",
+    "build:optimized": "npm run build:all && npm run analyze:bundles",
+    "start:backend": "cd backend && mvn spring-boot:run",
+    "start:frontend": "concurrently \"npm run start:admin\" \"npm run start:customer\"",
+    "start:admin": "cd admin-app && npm start",
+    "start:customer": "cd customer-app && npm start",
+    "start:mock": "node mock-backend.js",
+    "test:all": "npm run test:admin && npm run test:customer",
+    "test:admin": "cd admin-app && npm test",
+    "test:customer": "cd customer-app && npm test",
+    "lint:all": "npm run lint:admin && npm run lint:customer",
+    "lint:admin": "cd admin-app && npm run lint",
+    "lint:customer": "cd customer-app && npm run lint"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.16.1",
+    "concurrently": "^8.2.2",
+    "gzip-size": "^7.0.0",
+    "pretty-bytes": "^6.1.1",
+    "chalk": "^4.1.2"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "short_name": "RestoManager",
+  "name": "Restaurant Reservation Manager",
+  "description": "Professional restaurant reservation and table management system",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#2E7D32",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity", "utilities"],
+  "screenshots": [
+    {
+      "src": "/screenshot1.png",
+      "type": "image/png",
+      "sizes": "1280x720",
+      "label": "Dashboard View"
+    },
+    {
+      "src": "/screenshot2.png",
+      "type": "image/png",
+      "sizes": "1280x720",
+      "label": "Reservations Management"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Reservation",
+      "short_name": "Add",
+      "description": "Create a new reservation",
+      "url": "/reservations?action=new",
+      "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Today's Reservations",
+      "short_name": "Today",
+      "description": "View today's reservations",
+      "url": "/reservations?filter=today",
+      "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
+    }
+  ]
+}
